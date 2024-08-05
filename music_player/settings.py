@@ -33,9 +33,9 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # 我的应用
     'player',
+    'accounts',
     # 第三方应用
     'django_bootstrap5',
-    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -121,8 +121,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = ('static',)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# 我的设置
+LOGIN_REDIRECT_URL = 'player:index'
+LOGOUT_REDIRECT_URL = 'player:index'
+LOGIN_URL = 'accounts:login'

@@ -1,0 +1,58 @@
+{% load static %}
+<div class="row mt-3">
+    <div class="col-1"></div>
+    <div class="col-10">
+        <div class="image">
+            <img src="{% static 'music_cover.jpg' %}" class="img img-fluid" />
+        </div>
+    </div>
+    <div class="col-1"></div>
+</div>
+<div class="row mt-3">
+    <div class="col">
+        <h2 class="text-center xf-title-music-playing">音乐播放器</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-1"></div>
+    <!-- <div class="col-10">
+        <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar progress-bar-striped progress-bar-animated xf-audio-progress" style="width: 0"></div>
+        </div>
+    </div> -->
+    <div class="col-10">
+        <input type="range" class="form-range xf-music-bar" min="0" max="100" value="0">
+    </div>
+    <div class="col-1"></div>
+</div>
+<div class="row mt-3">
+    <div class="col text-center fs-1 xf-music-time">00:00</div>
+</div>
+<div class="row mt-3">
+    <div class="col-1"></div>
+    <div class="col-10">
+        <div class="row text-center d-flex align-items-center">
+            <div class="col-3">
+                <button class="btn xf-btn-repeat"><i class="bi bi-repeat" style="font-size: 2em;"></i></button>
+                <button class="btn xf-btn-repeat-1"><i class="bi bi-repeat-1" style="font-size: 2em;"></i></button>
+            </div>
+            <div class="col-6">
+                <button class="btn xf-btn-play"><i class="bi bi-play-fill" style="font-size: 6em;"></i></button>
+                <button class="btn xf-btn-pause"><i class="bi bi-pause-fill" style="font-size: 6em;"></i></button>
+            </div>
+            <div class="col-3">
+                <button class="btn xf-btn-play-next"><i class="bi bi-skip-end" style="font-size: 3em;"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-1"></div>
+</div>
+<div class="row d-none">
+    <div class="col">
+        <audio src="#"  controls autoplay  name="media" id="xf-audio"></audio>
+    </div>
+</div>

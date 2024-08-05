@@ -1,0 +1,18 @@
+.xf-nav-bottom{
+    border-top: 1px solid #bdbdbd;
+}
+.xf-nav-bottom button{
+    font-size: 0.8em;
+}
+.xf-nav-bottom i{
+    font-size: 2em;
+}
+
+.image{
+    position:relative;
+    overflow:hidden;
+    padding-bottom:100%;
+}
+.image img{
+    position:absolute;
+}

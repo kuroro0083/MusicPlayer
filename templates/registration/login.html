@@ -10,22 +10,20 @@
     <link type="text/css" rel="stylesheet" href="{% static 'music_player.css' %}">
 </head>
 <body>
-    {% include 'player/nav.html' %}
     
-    <div class="mt-5">　</div>
     <div class="container-fluid mt-2">
-        <!-- <div class="row">
-            <div class="col">
-                <img src="{% static 'music_cover.png' %}">
+        <div class="card text-bg-light mt-5">
+            <div class="card-body">
+                <h1 class="text-center">播放器登录</h1>
+                <form action="{% url 'accounts:login' %}" method='post'>
+                {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {% bootstrap_button button_type="submit" content="登陆" %}
+                </form>
             </div>
-        </div> -->
-        {% block content %}{% endblock content %}
-        <div class="mt-5">　</div>
-        {% include 'player/footer.html' %}
+          </div>
     </div>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'music_player.js' %}"></script>
-    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </body>
 </html>
