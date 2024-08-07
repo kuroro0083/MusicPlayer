@@ -13,6 +13,7 @@ document.querySelectorAll('button[data-bs-toggle="pill"]').forEach((t,i)=>{
 })
 
 
+
 $(document).ready(function(){
     currentDir = '/';
     preDir = ['/'];
@@ -31,9 +32,9 @@ $(document).ready(function(){
     audio.addEventListener('loadstart', function(){renderPlayingTitle('加载中....')});
     audio.addEventListener('canplay', function(){ renderPlayingTitle(playList[findPlayingPosition()].title) });
     
-    $('.xf-btn-test').click(function(){
-        console.log(playList);
-    });
+    // $('.xf-btn-test').click(function(){
+    //     console.log(playList);
+    // });
     
     $('.xf-btn-play').click(function(){
         audio.play().catch(function(){showPlayBtn();playFirstSong();console.log('err');});
@@ -221,6 +222,16 @@ $(document).ready(function(){
                 bindRmoveFromListEvent();
                 bindPlayFromList();
             }
+            // document.getElementById("toastbtn").onclick = function() {
+            //     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+            //     var toastList = toastElList.map(function(toastEl) {
+            //       return new bootstrap.Toast(toastEl)
+            //     })
+            //     toastList.forEach(toast => toast.show())
+            //   }
+            const toastLiveExample = document.getElementById('liveToast')
+            const toast = new bootstrap.Toast(toastLiveExample)
+            toast.show()
         });
     }
 
