@@ -132,3 +132,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = 'player:index'
 LOGOUT_REDIRECT_URL = 'player:index'
 LOGIN_URL = 'accounts:login'
+
+SESSION_COOKIE_AGE = 43200  # Session的cookie失效日期（2周）（数字为秒数）（默认）
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 是否关闭浏览器使得Session过期（默认）
+SESSION_SAVE_EVERY_REQUEST = True       # 是否每次请求都保存Session，默认修改之后才保存（默认）

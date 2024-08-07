@@ -33,8 +33,27 @@ $(document).ready(function(){
     audio.addEventListener('canplay', function(){ renderPlayingTitle(playList[findPlayingPosition()].title) });
     
     // $('.xf-btn-test').click(function(){
-    //     console.log(playList);
+    //     $.post({
+    //         'url' : 'set-play-list',
+    //         'data' : {
+    //             'list' : JSON.stringify(playList)
+    //         },
+    //         'success' : function(res){
+    //             // console.log(JSON.parse(res.data));
+    //         }
+    //     });
     // });
+    
+    // $('.xf-btn-test2').click(function(){
+    //     $.get({
+    //         'url' : 'get-play-list',
+    //         'success' : function(res){
+    //             console.log(JSON.parse(res.data));
+    //         }
+    //     });
+    // });
+
+
     
     $('.xf-btn-play').click(function(){
         audio.play().catch(function(){showPlayBtn();playFirstSong();console.log('err');});
@@ -125,9 +144,15 @@ $(document).ready(function(){
 
     function initPlayList()
     {
-        renderPlayList();
-        bindRmoveFromListEvent();
-        bindPlayFromList();
+        $.get({
+            'url' : 'get-play-list',
+            'success' : function(res){
+                playList = JSON.parse(res.data);
+                renderPlayList();
+                bindRmoveFromListEvent();
+                bindPlayFromList();
+            }
+        });
     }
 
     function showList(dir)
@@ -218,17 +243,12 @@ $(document).ready(function(){
                 }else{
                     playList.push({ 'title': t, 'url': u, 'status':'waiting' });
                 }
+                submitPlayList();
                 renderPlayList();
                 bindRmoveFromListEvent();
                 bindPlayFromList();
             }
-            // document.getElementById("toastbtn").onclick = function() {
-            //     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-            //     var toastList = toastElList.map(function(toastEl) {
-            //       return new bootstrap.Toast(toastEl)
-            //     })
-            //     toastList.forEach(toast => toast.show())
-            //   }
+            
             const toastLiveExample = document.getElementById('liveToast')
             const toast = new bootstrap.Toast(toastLiveExample)
             toast.show()
@@ -269,6 +289,18 @@ $(document).ready(function(){
         audio.play(); // 播放音频
     }
 
+    function submitPlayList(){
+        $.post({
+            'url' : 'set-play-list',
+            'data' : {
+                'list' : JSON.stringify(playList)
+            },
+            'success' : function(res){
+                console.log(JSON.parse(res.data));
+            }
+        });
+    }
+
     // ===========  操作列表 ============
     // 点击新播放一首曲子
     function listAddAndPlayNewSong(songTitle, songUrl){
@@ -281,6 +313,7 @@ $(document).ready(function(){
         listChangePlayingToPlayed();
         d = {'title':songTitle, 'url':songUrl, 'status':'playing'};
         playList.splice(pp+1, 0, d);
+        submitPlayList();
         renderPlayList();
         bindRmoveFromListEvent();
         bindPlayFromList();
@@ -316,6 +349,7 @@ $(document).ready(function(){
                 playList.splice(i, 1);
             }
         }
+        submitPlayList();
     }
 
     function playNextSong(){
@@ -362,18 +396,18 @@ $(document).ready(function(){
         if(data.type == 'dir'){
             i = '<i class="bi bi-folder"></i>';
             e = ''
-            html = "<tr><td class='xf-btn-music-folder' data-var='"+t+"'>"+i+' '+t+"</td><td class='text-end'>"+e+"</td></tr>"
+            html = "<tr><td class='xf-btn-music-folder' data-var='"+t+"'>"+i+' '+cutMp3FromName(t)+"</td><td class='text-end'>"+e+"</td></tr>"
         }else{
             i = '<i class="bi bi-music-note-beamed"></i>';
             e = '<button class="btn btn-lg xf-btn-play-music" data-var="'+fp+'" data-title="'+data.title+'"><i class="bi bi-play-circle text-primary"></i></button>' + 
             '<button class="btn btn-lg xf-btn-add-music-to-list" data-var="'+fp+'" data-title="'+data.title+'"><i class="bi bi-file-earmark-plus text-danger"></i></button>'
-            html = '<tr><td class="xf-btn-play-music" data-var="'+fp+'" data-title="'+data.title+'">'+i+" "+t+'</td><td class="text-end">'+e+'</td></tr>'
+            html = '<tr><td class="xf-btn-play-music" data-var="'+fp+'" data-title="'+data.title+'">'+i+" "+cutMp3FromName(t)+'</td><td class="text-end">'+e+'</td></tr>'
         }
         return html;
     }
 
     function renderPlayingTitle(t){
-        $('.xf-title-music-playing').html(t);
+        $('.xf-title-music-playing').html(cutMp3FromName(t));
     }
 
     function renderBread(){
@@ -400,14 +434,14 @@ $(document).ready(function(){
             rm = '';
             switch(s){
                 case 'playing':
-                    mt = '<td class="fs-3 text-primary xf-btn-play-from-list"  data-var="'+u+'" data-title="'+t+'"><i class="bi bi-volume-up text-primary"></i> '+ t +'</td>';
+                    mt = '<td class="fs-3 text-primary xf-btn-play-from-list"  data-var="'+u+'" data-title="'+t+'"><i class="bi bi-volume-up text-primary"></i> '+ cutMp3FromName(t) +'</td>';
                     break;
                 case 'played':
-                    mt = '<td class="fs-5 text-secondary xf-btn-play-from-list" data-var="'+u+'" data-title="'+t+'"> '+ t +'</td>';
+                    mt = '<td class="fs-5 text-secondary xf-btn-play-from-list" data-var="'+u+'" data-title="'+t+'"> '+ cutMp3FromName(t) +'</td>';
                     rm = '<button class="btn xf-btn-remove-from-music-list" data-var="'+u+'"><i class="bi bi-trash text-danger"></i></button>';
                     break;
                 default:
-                    mt = '<td class="fs-5 xf-btn-play-from-list" data-var="'+u+'" data-title="'+t+'"> '+ t +'</td>';
+                    mt = '<td class="fs-5 xf-btn-play-from-list" data-var="'+u+'" data-title="'+t+'"> '+ cutMp3FromName(t) +'</td>';
                     rm = '<button class="btn xf-btn-remove-from-music-list" data-var="'+u+'"><i class="bi bi-trash text-danger"></i></button>';
                     break;
             }
@@ -417,5 +451,7 @@ $(document).ready(function(){
         $('.xf-play-list').html(html);
     }
     
-
+    function cutMp3FromName(mp3){
+        return mp3.replace('.mp3','');
+    }
 })

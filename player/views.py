@@ -1,10 +1,10 @@
-import os, time
+import os, json
 from pathlib import Path
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse, FileResponse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 @login_required
 def index(request):
@@ -26,8 +26,21 @@ def getMusic(request, song):
     response['Content-Disposition'] = 'attachment; filename='+musicName
     response.write(file)
     return response
-    # context = {'song':song,'musicPath':Path(musicPath)}
-    # return render(request, 'player/get_music.html', context)
+
+@login_required
+def getPlayList(request):
+    list = json.loads(request.COOKIES.get('play_list'))
+    jrep = JsonResponse({'data':list}, safe=False)
+    return jrep
+
+@login_required
+@csrf_exempt
+def setPlayList(request):
+    postData = request.POST.dict()
+    playList = postData['list']
+    jrep = JsonResponse({'data':playList})
+    jrep.set_cookie('play_list', json.dumps(playList), 365*24*60*60)
+    return jrep
 
 def recursive_listdir(path, root='/'):
     dataArr = []
